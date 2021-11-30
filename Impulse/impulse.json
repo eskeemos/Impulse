@@ -1,0 +1,23 @@
+﻿{
+  "name": "impulse",
+  "exchanegs": [
+    {
+      "name": "binance",
+      "apikey": "TODO",
+      "apisecret": "TODO"
+    }
+  ],
+  "strategy": {
+    "activeId": 1,
+    "intervalM": "1",
+    "available": [
+      {
+        "id": 1,
+        "symbol": "ETHUSDT",
+        "storagePath": "",
+        "bidRatio": 0,
+        "askRatio": 0
+      }
+    ]
+  }
+}
