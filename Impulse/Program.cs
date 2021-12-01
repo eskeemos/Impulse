@@ -24,6 +24,16 @@ namespace Impulse
 
             var app = config.Get<App>();
 
+            try
+            {
+                //var serviceProvider = DepedencyProvider.
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             return 0;
         }
     }

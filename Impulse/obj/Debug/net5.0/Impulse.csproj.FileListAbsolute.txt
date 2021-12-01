@@ -102,3 +102,5 @@ C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\impulse.json
 C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\Impulse.Shared.dll
 C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\Impulse.Shared.pdb
 C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\System.Text.Encodings.Web.dll
+C:\Users\krzys\Postman\Desktop\Impulse\Impulse\bin\Debug\net5.0\System.Text.Json.dll
