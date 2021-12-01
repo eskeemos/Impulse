@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Impulse.Shared.Domain.Templates;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -7,17 +8,21 @@ namespace Impulse
 {
     class Program
     {
-        private static readonly string app = "impulse";
+        private static readonly string appName = "impulse";
+        private static readonly string fileName = $"{appName}-{DateTime.UtcNow.ToString("ddMMyyyy")}.log";
         static async Task<int> Main()
         {
-            NLog.LogManager.Configuration.Variables["fileName"] = $"{app}-{DateTime.UtcNow.ToString("ddMMyyyy")}.log";
-            NLog.LogManager.Configuration.Variables["archiveFileName"] = $"{app}-{DateTime.UtcNow.ToString("ddMMyyyy")}.log";
+            
+            NLog.LogManager.Configuration.Variables["fileName"] = fileName;
+            NLog.LogManager.Configuration.Variables["archiveFileName"] = fileName;
 
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile($"{app}.json");
+                .AddJsonFile($"{appName}.json");
 
             var config = configBuilder.Build();
+
+            var app = config.Get<App>();
 
             return 0;
         }
