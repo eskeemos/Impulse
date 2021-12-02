@@ -1,12 +1,9 @@
 ﻿using Binance.Net;
 using Impulse.Shared.Domain.Templates;
-using Microsoft.Extensions.Logging;
 using NLog;
 using Quartz;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Impulse.Helpers
@@ -24,10 +21,17 @@ namespace Impulse.Helpers
 
             using (var client = new BinanceClient())
             {
-                //var avgPrice = await client.Spot.
+                var avgPrice = await client.Spot.Market.GetCurrentAvgPriceAsync(activeStrategy.Symbol);
+
+                if (avgPrice.Success)
+                {
+                    logger.Info($"Average price from last {avgPrice.Data.Minutes}min for {activeStrategy.Symbol} on {exchange.Name} is {avgPrice.Data.Price}");
+                }
+                else
+                {
+                    logger.Warn(avgPrice.Error.Message);
+                }
             }
-
-
         }
     }
 }

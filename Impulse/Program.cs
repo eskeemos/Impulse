@@ -1,4 +1,5 @@
-﻿using Impulse.Shared.Domain.Templates;
+﻿using Impulse.Helpers;
+using Impulse.Shared.Domain.Templates;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
@@ -26,7 +27,7 @@ namespace Impulse
 
             try
             {
-                //var serviceProvider = DepedencyProvider.
+                var serviceProvider = DepedencyProvider.Get(config);
             }
             catch (Exception)
             {
