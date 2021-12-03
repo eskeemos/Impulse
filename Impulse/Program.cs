@@ -1,6 +1,8 @@
 ﻿using Impulse.Helpers;
 using Impulse.Shared.Domain.Templates;
 using Microsoft.Extensions.Configuration;
+using Quartz;
+using Quartz.Impl;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,8 +11,19 @@ namespace Impulse
 {
     class Program
     {
+        #region Variables
+        
+        // Application name
         private static readonly string appName = "impulse";
+        // Names for files generated dynamically 
         private static readonly string fileName = $"{appName}-{DateTime.UtcNow.ToString("ddMMyyyy")}.log";
+        // Interface that schedules units of work
+        private static IScheduler scheduler;
+        // Provides obtains an IScheduler instance
+        private static ISchedulerFactory schedulerFactory;
+
+        #endregion
+
         static async Task<int> Main()
         {
             
@@ -28,12 +41,38 @@ namespace Impulse
             try
             {
                 var serviceProvider = DepedencyProvider.Get(config);
+
+                schedulerFactory = new StdSchedulerFactory();
+
+                scheduler = await schedulerFactory.GetScheduler();
+
+                await scheduler.Start();
+
+                IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
+                    .WithIdentity("BuyDeepSellHighJob")
+                    .Build();
+
+                jobDetail.JobDataMap["Strategy"] = app.Strategy;
+                jobDetail.JobDataMap["Exchanges"] = app.Exchanges;
+
+                var tBuilder = TriggerBuilder.Create()
+                    .WithIdentity("BuyDeepSellHighJobTrigger")
+                    .StartNow();
+
+                var bTrigger = tBuilder.Build();
+
+                await scheduler.ScheduleJob(jobDetail, bTrigger);
+
+                await Task.Delay(TimeSpan.FromSeconds(30));
+
+                Console.ReadKey();
             }
             catch (Exception)
             {
-
                 throw;
             }
+
+            NLog.LogManager.Shutdown();
 
             return 0;
         }
