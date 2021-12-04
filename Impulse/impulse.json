@@ -1,22 +1,22 @@
 ﻿{
-  "name": "impulse",
-  "exchanges": [
+  "Name": "impulse",
+  "Exchanges": [
     {
       "name": "binance",
-      "apikey": "my_hyper_typer_secure_key",
-      "apisecret": "pr0bab1y_n0t_y0ur_bussin3ss_h3r3"
+      "apikey": "VrOP0z7jyQLtuYuFsTlehn5TORwkDqcwO0dUDnTz98CmCRXHMsXKL4OBAjNkLCyA",
+      "apisecret": "qKyiKhHTzA3AwGVLyh3gQEBzH4ORXrmeYDTV4GQ1al7Di6pb33gsLH18FGH8O3WH"
     }
   ],
-  "strategy": {
-    "activeid": 1,
-    "intervalinM": "1",
-    "available": [
+  "Strategy": {
+    "ActiveId": 1,
+    "IntervalInMinutes": 1,
+    "StrategiesData": [
       {
-        "id": 1,
-        "symbol": "ETHUSDT",
-        "storagepath": "",
-        "bidratio": 0,
-        "askratio": 0
+        "Id": 1,
+        "Symbol": "ETHUSDT",
+        "StoragePath": "",
+        "BidRatio": 0,
+        "AskRatio": 0
       }
     ]
   }

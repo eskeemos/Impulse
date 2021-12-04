@@ -17,7 +17,7 @@ namespace Impulse.Helpers
         {
             Exchange exchange = (context.JobDetail.JobDataMap["Exchanges"] as IList<Exchange>).FirstOrDefault();
             Strategy strategy = context.JobDetail.JobDataMap["Strategy"] as Strategy;
-            AvailableStrategy activeStrategy = strategy.Available.FirstOrDefault(item => item.Id == strategy.ActiveId);
+            StrategyData activeStrategy = strategy.StrategiesData.FirstOrDefault(item => item.Id == strategy.ActiveId);
 
             using (var client = new BinanceClient())
             {
