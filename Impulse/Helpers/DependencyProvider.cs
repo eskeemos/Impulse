@@ -40,5 +40,6 @@ namespace Impulse.Helpers
 
             #endregion
         }
+
     }
 }

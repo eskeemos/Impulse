@@ -8,4 +8,5 @@
         public int BidRatio { get; set; }
         public int AskRatio { get; set; }
     }
+
 }   

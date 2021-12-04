@@ -1,22 +1,22 @@
 ﻿{
   "name": "impulse",
-  "exchanegs": [
+  "exchanges": [
     {
       "name": "binance",
-      "apikey": "TODO",
-      "apisecret": "TODO"
+      "apikey": "my_hyper_typer_secure_key",
+      "apisecret": "pr0bab1y_n0t_y0ur_bussin3ss_h3r3"
     }
   ],
   "strategy": {
-    "activeId": 1,
-    "intervalM": "1",
+    "activeid": 1,
+    "intervalinM": "1",
     "available": [
       {
         "id": 1,
         "symbol": "ETHUSDT",
-        "storagePath": "",
-        "bidRatio": 0,
-        "askRatio": 0
+        "storagepath": "",
+        "bidratio": 0,
+        "askratio": 0
       }
     ]
   }

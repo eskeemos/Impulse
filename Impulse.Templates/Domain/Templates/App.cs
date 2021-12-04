@@ -12,4 +12,5 @@ namespace Impulse.Shared.Domain.Templates
         public IEnumerable<Exchange> Exchanges { get; set; }
         public Strategy Strategy { get; set; }
     }
+
 }
