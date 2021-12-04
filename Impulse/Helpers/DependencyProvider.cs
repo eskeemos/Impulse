@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 
 namespace Impulse.Helpers
 {
-    public class DepedencyProvider
+    public class DependencyProvider
     {
         public static IServiceProvider Get(IConfigurationRoot config)
         {
-            var services = new ServiceCollection();
+            #region Var
+
+            ServiceCollection services = new ServiceCollection();
+
+            #endregion
+
+            #region Operations
 
             services.AddLogging(builder =>
             {
@@ -28,10 +34,11 @@ namespace Impulse.Helpers
 
             services.AddTransient<BuyDeepSellHighJob>();
 
-            var serviceProvider = services.BuildServiceProvider();
+            ServiceProvider serviceProvider = services.BuildServiceProvider();
 
             return serviceProvider;
 
+            #endregion
         }
     }
 }

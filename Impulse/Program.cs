@@ -16,7 +16,7 @@ namespace Impulse
         // Application name
         private static readonly string appName = "impulse";
         // Names for files generated dynamically 
-        private static readonly string fileName = $"{appName}-{DateTime.UtcNow.ToString("ddMMyyyy")}.log";
+        private static readonly string fileName = $"{appName}-{DateTime.UtcNow:ddMMyyyy}.log";
         // Interface that schedules units of work
         private static IScheduler scheduler;
         // Provides obtains an IScheduler instance
@@ -26,27 +26,33 @@ namespace Impulse
 
         static async Task<int> Main()
         {
-            
+            /* Create if not exists nlog file and set naming */
             NLog.LogManager.Configuration.Variables["fileName"] = fileName;
             NLog.LogManager.Configuration.Variables["archiveFileName"] = fileName;
 
+            /* Create config settings based on file */
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"{appName}.json");
 
+            // Resources compilation
             var config = configBuilder.Build();
 
+            // Connect object with configs
             var app = config.Get<App>();
 
+            
             try
             {
-                var serviceProvider = DepedencyProvider.Get(config);
+                var serviceProvider = DependencyProvider.Get(config);
 
                 schedulerFactory = new StdSchedulerFactory();
 
                 scheduler = await schedulerFactory.GetScheduler();
 
                 await scheduler.Start();
+
+
 
                 IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
                     .WithIdentity("BuyDeepSellHighJob")
@@ -58,7 +64,7 @@ namespace Impulse
                 var tBuilder = TriggerBuilder.Create()
                     .WithIdentity("BuyDeepSellHighJobTrigger")
                     .StartNow();
-
+                
                 var bTrigger = tBuilder.Build();
 
                 await scheduler.ScheduleJob(jobDetail, bTrigger);
@@ -71,7 +77,9 @@ namespace Impulse
             {
                 throw;
             }
+            
 
+            // Dispose all targets and close  logging
             NLog.LogManager.Shutdown();
 
             return 0;
