@@ -8,10 +8,18 @@ using System.Threading.Tasks;
 
 namespace Impulse.Helpers
 {
+    // Disallow executing several instances concurrently
     [DisallowConcurrentExecution]
     public class BuyDeepSellHighJob : IJob
     {
-        private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
+        #region Var
+
+            // Get loggers 'IMPULSE' from config file
+            private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
+
+        #endregion
+
+        #region Action
 
         public async Task Execute(IJobExecutionContext context)
         {
@@ -33,6 +41,9 @@ namespace Impulse.Helpers
                 }
             }
         }
+
+        #endregion
+        // asyncdasdas
     }
 
 }

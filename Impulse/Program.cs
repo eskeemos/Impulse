@@ -11,31 +11,42 @@ namespace Impulse
 {
     class Program
     {
-        #region Variables
+        #region Var
         
+        // App name
         private static readonly string appName = "impulse";
+        // Full log file name
         private static readonly string fileName = $"{appName}-{DateTime.UtcNow:ddMMyyyy}.log";
+        // Object that schedules units of work
         private static IScheduler scheduler;
+        // Provide a mechanism for obtaining IScheduler instances
         private static ISchedulerFactory schedulerFactory;
 
         #endregion
 
+        #region Action
+
         static async Task<int> Main()
         {
+            // Create(if not exists) and name file;
             NLog.LogManager.Configuration.Variables["fileName"] = fileName;
             NLog.LogManager.Configuration.Variables["archiveFileName"] = fileName;
 
+            // Create settings based on specified file
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"{appName}.json");
 
+            // Compile settings 
             var config = configBuilder.Build();
-           
+
+            // Connect object with configs
             var app = config.Get<App>();
 
-            
+
             try
             {
+                // not yet
                 var serviceProvider = DependencyProvider.Get(config);
 
                 schedulerFactory = new StdSchedulerFactory();
@@ -61,7 +72,7 @@ namespace Impulse
                     .WithIntervalInSeconds(5)
                     //.WithIntervalInMinutes(1)
                     .RepeatForever());
-                
+
                 var bTrigger = tBuilder.Build();
 
                 await scheduler.ScheduleJob(jobDetail, bTrigger);
@@ -74,10 +85,12 @@ namespace Impulse
             {
                 throw;
             }
-            
+
             NLog.LogManager.Shutdown();
 
             return 0;
         }
+
+        #endregion
     }
 }
