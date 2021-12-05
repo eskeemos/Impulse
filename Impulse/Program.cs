@@ -43,42 +43,48 @@ namespace Impulse
             // Connect object with configs
             var app = config.Get<App>();
 
-
             try
             {
-                // not yet
+                // Set up configured service
                 var serviceProvider = DependencyProvider.Get(config);
 
+                /* Create instance */
                 schedulerFactory = new StdSchedulerFactory();
-
                 scheduler = await schedulerFactory.GetScheduler();
 
+                // Start scheduler 
                 await scheduler.Start();
 
-
-
+                // Create job
                 IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
                     .WithIdentity("BuyDeepSellHighJob")
                     .Build();
 
+                /* Set up job data */
                 jobDetail.JobDataMap["Strategy"] = app.Strategy;
                 jobDetail.JobDataMap["Exchanges"] = app.Exchanges;
 
+                // Create trigger
                 var tBuilder = TriggerBuilder.Create()
                     .WithIdentity("BuyDeepSellHighJobTrigger")
                     .StartNow();
 
+                // Set up trigger
                 tBuilder.WithSimpleSchedule(x => x
                     .WithIntervalInSeconds(5)
-                    //.WithIntervalInMinutes(1)
+                    //.WithIntervalInMinutes(app.Strategy.IntervalInMinutes)
                     .RepeatForever());
 
+                // Compile trigger
                 var bTrigger = tBuilder.Build();
 
+                // Job schedule
                 await scheduler.ScheduleJob(jobDetail, bTrigger);
 
+                // Delay 
                 await Task.Delay(TimeSpan.FromSeconds(30));
 
+                // ReadKey
                 Console.ReadKey();
             }
             catch (Exception)
@@ -86,13 +92,12 @@ namespace Impulse
                 throw;
             }
 
+            // Close nlog
             NLog.LogManager.Shutdown();
 
             return 0;
         }
 
         #endregion
-
-        //layout="${date}|${level:uppercase=true}|${logger}| ${message} ${exception}" />
     }
 }

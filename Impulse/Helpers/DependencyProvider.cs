@@ -3,27 +3,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Impulse.Helpers
 {
     public class DependencyProvider
     {
+        #region Public
+
         public static IServiceProvider Get(IConfigurationRoot config)
         {
-            #region Var
-
+            // Create instance
             ServiceCollection services = new ServiceCollection();
-
-            #endregion
-
-            #region Operations
 
             services.AddLogging(builder =>
             {
+                /* Set logger Level and set properties and 
+                templates access */
                 builder.SetMinimumLevel(LogLevel.Trace);
                 builder.AddNLog(new NLogProviderOptions
                 {
@@ -32,14 +27,13 @@ namespace Impulse.Helpers
                 });
             });
 
+            // Add transient service
             services.AddTransient<BuyDeepSellHighJob>();
-
-            ServiceProvider serviceProvider = services.BuildServiceProvider();
-
-            return serviceProvider;
-
-            #endregion
+            
+            // Return builded service
+            return services.BuildServiceProvider();
         }
 
+        #endregion
     }
 }
