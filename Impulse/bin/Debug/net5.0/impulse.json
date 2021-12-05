@@ -1,6 +1,6 @@
 ﻿{
-  "name": "impulse",
-  "exchanges": [
+  "Name": "impulse",
+  "Exchanges": [
     {
       "name": "binance",
       "apikey": "VrOP0z7jyQLtuYuFsTlehn5TORwkDqcwO0dUDnTz98CmCRXHMsXKL4OBAjNkLCyA",
@@ -12,11 +12,11 @@
     "IntervalInMinutes": 1,
     "StrategiesData": [
       {
-        "id": 1,
-        "symbol": "ETHUSDT",
-        "storagepath": "",
-        "bidratio": 0,
-        "askratio": 0
+        "Id": 1,
+        "Symbol": "ETHUSDT",
+        "StoragePath": "",
+        "BidRatio": 0,
+        "AskRatio": 0
       }
     ]
   }

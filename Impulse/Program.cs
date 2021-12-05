@@ -92,5 +92,7 @@ namespace Impulse
         }
 
         #endregion
+
+        //layout="${date}|${level:uppercase=true}|${logger}| ${message} ${exception}" />
     }
 }

@@ -33,7 +33,7 @@ namespace Impulse.Helpers
 
                 if (avgPrice.Success)
                 {
-                    logger.Info($"Average price from last {avgPrice.Data.Minutes}min for {activeStrategy.Symbol} on {exchange.Name} is {avgPrice.Data.Price}");
+                    logger.Info($"IM[{avgPrice.Data.Minutes}]|CP[{activeStrategy.Symbol}]|PN[{exchange.Name}]|PR[{avgPrice.Data.Price}]");
                 }
                 else
                 {
