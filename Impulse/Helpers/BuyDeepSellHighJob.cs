@@ -1,7 +1,9 @@
 ﻿using Binance.Net;
+using Impulse.Shared.Domain.Service;
 using Impulse.Shared.Domain.Templates;
 using NLog;
 using Quartz;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,8 +17,22 @@ namespace Impulse.Helpers
     {
         #region Var
 
-            // Get loggers 'IMPULSE' from config file
-            private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
+        // Get loggers 'IMPULSE' from config file
+        private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
+        /* Instance of storage and calculations interfaces */
+        private readonly IStorage storage;
+        private readonly ICalculations calculations;
+
+        #endregion
+
+        #region Constructor
+
+        // Set up var's
+        public BuyDeepSellHighJob(IStorage _storage, ICalculations _calculations)
+        {
+            storage = _storage;
+            calculations = _calculations;
+        }
 
         #endregion
 
@@ -37,8 +53,12 @@ namespace Impulse.Helpers
 
                 if (avgPrice.Success)
                 {
-                    // Customized message transferred into logger
+                    // Save price from interval
+                    storage.SaveValue(avgPrice.Data.Price);
+
+                    /* Customized message transferred into logger */
                     logger.Info($"IM[{avgPrice.Data.Minutes}]|CP[{activeStrategy.Symbol}]|PN[{exchange.Name}]|PR[{avgPrice.Data.Price}]");
+                    logger.Info($"AVG PRICE : {Math.Round(calculations.CountAvarange(storage.GetValues()), 4)}");
                 }
                 else
                 {

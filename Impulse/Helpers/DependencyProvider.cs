@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Impulse.Shared.Domain.Service;
+using Impulse.Shared.Domain.Service.Implementations;
+using Impulse.Shared.Domain.Templates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
+using System.Linq;
 
 namespace Impulse.Helpers
 {
@@ -10,11 +13,13 @@ namespace Impulse.Helpers
     {
         #region Public
 
-        public static IServiceProvider Get(IConfigurationRoot config)
+        public static IServiceProvider Get(App app)
         {
-            // Create instance
             ServiceCollection services = new ServiceCollection();
 
+            #region Logging
+
+            // Create instance
             services.AddLogging(builder =>
             {
                 /* Set logger Level and set properties and 
@@ -27,9 +32,25 @@ namespace Impulse.Helpers
                 });
             });
 
+            #endregion
+
             // Add transient service
             services.AddTransient<BuyDeepSellHighJob>();
-            
+
+            #region Services
+
+            // Obtain strategy
+            var strategy = app.Strategy.StrategiesData.FirstOrDefault(s => s.Id == app.Strategy.ActiveId);
+
+            // TODO
+            services.AddTransient<IStorage>(service =>
+                new FileStorage(strategy.StoragePath));
+
+            // TODO
+            services.AddTransient<ICalculations, CalculationsAvarage>();
+
+            #endregion
+
             // Return builded service
             return services.BuildServiceProvider();
         }

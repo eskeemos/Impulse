@@ -14,7 +14,7 @@
       {
         "Id": 1,
         "Symbol": "ETHUSDT",
-        "StoragePath": "",
+        "StoragePath": "c:\\impulse\\dataVal.txt",
         "BidRatio": 0,
         "AskRatio": 0
       }

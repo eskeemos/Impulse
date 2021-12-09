@@ -46,11 +46,17 @@ namespace Impulse
             try
             {
                 // Set up configured service
-                var serviceProvider = DependencyProvider.Get(config);
+                var serviceProvider = DependencyProvider.Get(app);
+
+                // Create instance of new job
+                var jobFactory = new JobFactory(serviceProvider);
 
                 /* Create instance */
                 schedulerFactory = new StdSchedulerFactory();
                 scheduler = await schedulerFactory.GetScheduler();
+
+                // TODO
+                scheduler.JobFactory = jobFactory;
 
                 // Start scheduler 
                 await scheduler.Start();
