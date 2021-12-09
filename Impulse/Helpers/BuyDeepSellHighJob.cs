@@ -17,17 +17,18 @@ namespace Impulse.Helpers
     {
         #region Var
 
-        // Get loggers 'IMPULSE' from config file
+        // Define logger 'IMPULSE' from config file
         private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
-        /* Instance of storage and calculations interfaces */
+        // Declare storage interface
         private readonly IStorage storage;
+        // Declare calculations interface
         private readonly ICalculations calculations;
 
         #endregion
 
         #region Constructor
 
-        // Set up var's
+        // Constructor for (IStorage, ICalculations)
         public BuyDeepSellHighJob(IStorage _storage, ICalculations _calculations)
         {
             storage = _storage;

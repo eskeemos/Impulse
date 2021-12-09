@@ -15,15 +15,13 @@ namespace Impulse.Helpers
 
         public static IServiceProvider Get(App app)
         {
+            // Create instance of serviceCollection
             ServiceCollection services = new ServiceCollection();
 
-            #region Logging
-
-            // Create instance
+            // Add logging service 
             services.AddLogging(builder =>
             {
-                /* Set logger Level and set properties and 
-                templates access */
+                // Set logger level, properties and templates access
                 builder.SetMinimumLevel(LogLevel.Trace);
                 builder.AddNLog(new NLogProviderOptions
                 {
@@ -32,26 +30,20 @@ namespace Impulse.Helpers
                 });
             });
 
-            #endregion
-
             // Add transient service
             services.AddTransient<BuyDeepSellHighJob>();
 
-            #region Services
-
-            // Obtain strategy
+            // Obtain current strategy
             var strategy = app.Strategy.StrategiesData.FirstOrDefault(s => s.Id == app.Strategy.ActiveId);
 
             // TODO
-            services.AddTransient<IStorage>(service =>
-                new FileStorage(strategy.StoragePath));
-
+            services.AddTransient<BuyDeepSellHighJob>();
+            // TODO
+            services.AddTransient<IStorage>(service => new FileStorage(strategy.StoragePath));
             // TODO
             services.AddTransient<ICalculations, CalculationsAvarage>();
 
-            #endregion
-
-            // Return builded service
+            // Return ready services
             return services.BuildServiceProvider();
         }
 
