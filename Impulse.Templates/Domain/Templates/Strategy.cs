@@ -4,13 +4,19 @@ namespace Impulse.Shared.Domain.Templates
 {
     public class Strategy
     {
-        // Id of current Strategy
+        /// <summary>
+        /// Strategy id
+        /// </summary>
         public int ActiveId { get; set; }
 
-        // Interval of a new register
+        /// <summary>
+        /// Register interval
+        /// </summary>
         public int IntervalInMinutes { get; set; }
 
-        // Iteracja konkretnych strategii
-        public IEnumerable<StrategyData> StrategiesData { get; set; }
+        /// <summary>
+        /// Collection of strategies info
+        /// </summary>
+        public IEnumerable<StrategyInfo> StrategiesData { get; set; }
     }
 }

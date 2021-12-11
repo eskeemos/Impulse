@@ -4,13 +4,19 @@ namespace Impulse.Shared.Domain.Templates
 {
     public class App
     {
-        // App name
+        /// <summary>
+        /// App name
+        /// </summary>
         public string Name { get; set; }
 
-        // Exchanges data
+        /// <summary>
+        /// Collection of exchanges
+        /// </summary>
         public IEnumerable<Exchange> Exchanges { get; set; }
 
-        // Strategy data
+        /// <summary>
+        /// Strategy
+        /// </summary>
         public Strategy Strategy { get; set; }
     }
 }

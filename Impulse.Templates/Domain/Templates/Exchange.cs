@@ -1,14 +1,20 @@
 ﻿namespace Impulse.Shared.Domain.Templates
 {
     public class Exchange
-    {
-        // Exchange platform name 
+    { 
+        /// <summary>
+        /// Exchange platform naem
+        /// </summary>
         public string Name { get; set; }
 
-        // Api key
+        /// <summary>
+        /// Api key from platform
+        /// </summary>
         public string ApiKey { get; set; }
 
-        // Api secret
+        /// <summary>
+        /// Api secret key from platform
+        /// </summary>
         public string ApiSecret { get; set; }
     }
 }
