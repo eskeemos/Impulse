@@ -7,37 +7,43 @@ namespace Impulse.Helpers
 {
     public class JobFactory : IJobFactory
     {
-        #region Var
+        #region Variables
 
         protected readonly IServiceScope scope;
 
         #endregion
 
-        #region Ctor
+        #region Constructor
 
+        /// <summary>
+        /// Set up variables
+        /// </summary>
+        /// <param name="_scope">Job scope</param>
         public JobFactory(IServiceProvider container)
         {
-            scope = container.CreateScope();
+            this.scope = container.CreateScope();
         }
 
         #endregion
 
-        #region Public
+        #region Implemented functions
+
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            /* return service of specific type */
             return scope.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
         }
 
         public void ReturnJob(IJob job)
         {
-            // Allow to JobFactory to release unmanaged resources 
             (job as IDisposable)?.Dispose();
         }
 
+        #endregion
+
+        #region Public
+
         public void Dispose()
         {
-            // Releases resources 
             scope.Dispose();
         }
 
