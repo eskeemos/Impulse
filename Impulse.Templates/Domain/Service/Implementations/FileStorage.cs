@@ -1,62 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Impulse.Shared.Domain.Service.Implementations
 {
     public class FileStorage : IStorage
     {
-        #region Var
+        #region Variables
 
-        // Storage path
-        private readonly string filePath;
+        /// <summary>
+        /// Storage path
+        /// </summary>
+        private readonly string storagePath;
 
         #endregion
 
         #region Constructor
 
-        // Constructor
-        public FileStorage(string _filePath)
+        /// <summary>
+        /// Set up variables
+        /// </summary>
+        /// <param name="_storagePath">Storage path</param>
+        public FileStorage(string _storagePath)
         {
-            // Set up var's
-            filePath = _filePath;
+            storagePath = _storagePath;
         }
 
         #endregion
 
-        #region Public
+        #region Implemented functions
 
-        // Obtain values from store file
         public ICollection<decimal> GetValues()
         {
-            // init empty values list
             var list = new List<decimal>();
-            // use streamReader to interpret file
-            using (StreamReader reader = new StreamReader(filePath))
+
+            using (StreamReader reader = new StreamReader(storagePath))
             {
-                // init empty val
                 string line;
-                // interpret file values until false
+
                 while ((line = reader.ReadLine()) != null)
                 {
-                    // add value to file
                     list.Add(Convert.ToDecimal(line));
                 }
             }
-            // return obtained values
+
             return list;
         }
 
-        // Save new value to file
-        public void SaveValue(decimal val)
+        public void SaveValue(decimal value)
         {
-            // obtain writer reference
-            using StreamWriter writer = new StreamWriter(filePath, true);
-            // overwrite file
-            writer.WriteLine(val);
+            using StreamWriter writer = new StreamWriter(storagePath, true);
+
+            writer.WriteLine(value);
         }
 
         #endregion
