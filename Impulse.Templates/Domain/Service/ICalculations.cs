@@ -11,18 +11,24 @@ namespace Impulse.Shared.Domain.Service
         /// <returns>Values avarange</returns>
         decimal CountAvarange(IEnumerable<decimal> values);
 
+
         /// <summary>
         /// Condition to fulfill to buy
         /// </summary>
-        /// <param name="priceDrop">Percentage drop</param>
+        /// <param name="conditionDrop">Percentage drop</param>
+        /// <param name="storedAvarage">Price avarage</param>
+        /// <param name="price">Current price</param>
         /// <returns>true of false</returns>
-        bool YesToBuy(int priceDrop);
+        bool YesToBuy(int conditionDrop, decimal storedAvarage, decimal price);
+
 
         /// <summary>
         /// Condition to fulfill to sell
         /// </summary>
-        /// <param name="priceRise">Percentage increase</param>
+        /// <param name="conditionRise">Percentage increase</param>
+        /// <param name="storedAvarage">Price avarage</param>
+        /// <param name="price">Current price</param>
         /// <returns>true of false</returns>
-        bool YesToSell(int priceRise);
+        bool YesToSell(int conditionRise, decimal storedAvarage, decimal price);
     }
 }

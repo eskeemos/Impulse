@@ -18,13 +18,13 @@
         public string StoragePath { get; set; }
 
         /// <summary>
-        /// Condition how much the price must drop(in percentage)
-        /// </summary>
-        public int BidRatio { get; set; }
-
-        /// <summary>
         /// Condition how much the price must increase(in percentage)
         /// </summary>
-        public int AskRatio { get; set; }
+        public int Rise { get; set; }
+
+        /// <summary>
+        /// Condition how much the price must drop(in percentage)
+        /// </summary>
+        public int Drop { get; set; }
     }
 }   

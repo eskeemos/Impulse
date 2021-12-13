@@ -53,18 +53,29 @@ namespace Impulse.Helpers
         {
             Exchange exchange = (context.JobDetail.JobDataMap["Exchanges"] as IList<Exchange>).FirstOrDefault();
             Strategy strategy = context.JobDetail.JobDataMap["Strategy"] as Strategy;
-            StrategyInfo activeStrategy = strategy.StrategiesData.FirstOrDefault(item => item.Id == strategy.ActiveId);
+            StrategyInfo strategyInfo = strategy.StrategiesData.FirstOrDefault(item => item.Id == strategy.ActiveId);
 
             using (var client = new BinanceClient())
             {
-                var avgPrice = await client.Spot.Market.GetCurrentAvgPriceAsync(activeStrategy.Symbol);
+                var avgPrice = await client.Spot.Market.GetCurrentAvgPriceAsync(strategyInfo.Symbol);
 
                 if (avgPrice.Success)
                 {
-                    storage.SaveValue(avgPrice.Data.Price);
+                    var price = avgPrice.Data.Price;
+                    var storedAvarage = calculations.CountAvarange(storage.GetValues());
 
-                    logger.Info($"IM[{avgPrice.Data.Minutes}]|CP[{activeStrategy.Symbol}]|PN[{exchange.Name}]|PR[{avgPrice.Data.Price}]");
-                    logger.Info($"AVG PRICE : {Math.Round(calculations.CountAvarange(storage.GetValues()), 4)}");
+                    logger.Info($"IM[{avgPrice.Data.Minutes}]|CP[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{Math.Round(price, 4)}]");
+                    logger.Info($"AVG PRICE : {Math.Round(storedAvarage, 4)}");
+
+                    storage.SaveValue(price);
+
+                    var buyCondition = calculations.YesToBuy(strategyInfo.Rise, storedAvarage, price);
+
+                    if(buyCondition)
+                    {
+
+                    }
+
                 }
                 else
                 {

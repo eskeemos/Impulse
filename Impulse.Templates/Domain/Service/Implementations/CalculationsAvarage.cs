@@ -9,18 +9,26 @@ namespace Impulse.Shared.Domain.Service.Implementations
         #region Implemented functions
 
         public decimal CountAvarange(IEnumerable<decimal> values)
-        {
-            return values.Average();
-        }
+            => values.Average();
+        
+        public bool YesToBuy(int priceDrop, decimal storedAvarage, decimal price)
+            => (storedAvarage > price) 
+                ? 100 - (price / storedAvarage * 100) >= priceDrop
+                : false;
 
-        public bool YesToBuy(int priceDrop)
+        public bool YesToSell(int conditionRise, decimal storedAvarage, decimal price)
         {
-            throw new NotImplementedException();
-        }
+            if(price > storedAvarage)
+            {
+                var part = price / storedAvarage;
+                var realRise = decimal.Round(part - Math.Truncate(part), 2) * 100;
 
-        public bool YesToSell(int priceRise)
-        {
-            throw new NotImplementedException();
+                return realRise > conditionRise;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion
