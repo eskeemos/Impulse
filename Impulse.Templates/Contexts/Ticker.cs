@@ -71,7 +71,7 @@ namespace Impulse.Shared.Contexts
             public decimal Result { get; private set; }
             public void setResult(decimal result)
             {
-                Result = result;
+                Result = decimal.Round(result, 2);
             }
             public string Message { get; set; }
             public bool Success => string.IsNullOrWhiteSpace(Message);

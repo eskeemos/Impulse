@@ -70,8 +70,8 @@ namespace Impulse.Helpers
 
                     var storedAvarage = Average.CountAverage(storage.GetValues(), strategyInfo.Average);
 
-                    logger.Info($"IM[{strategy.IntervalInMinutes}]|SN[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{Math.Round(price,4)}]");
-                    logger.Info($"Average price for last {strategyInfo.Average} is {Math.Round(storedAvarage, 4)}");
+                    logger.Info($"IM[{strategy.IntervalInMinutes}]|SN[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{price}]");
+                    logger.Info($"Average price for last {strategyInfo.Average} is {Math.Round(storedAvarage, 2)}");
                     var buyCondition = market.YesToBuy(strategyInfo.Rise, storedAvarage, price);
 
                     if(buyCondition)
