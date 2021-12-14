@@ -2,16 +2,8 @@
 
 namespace Impulse.Shared.Domain.Service
 {
-    public interface ICalculations
+    public interface IMarket
     {
-        /// <summary>
-        /// Count main avarage of all avarages from interval
-        /// </summary>
-        /// <param name="values">Interval avarange</param>
-        /// <returns>Values avarange</returns>
-        decimal CountAvarange(IEnumerable<decimal> values);
-
-
         /// <summary>
         /// Condition to fulfill to buy
         /// </summary>

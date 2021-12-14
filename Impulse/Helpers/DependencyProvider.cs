@@ -26,7 +26,7 @@ namespace Impulse.Helpers
 
             services.AddLogging(builder =>
             {
-                builder.SetMinimumLevel(LogLevel.Trace);
+                 builder.SetMinimumLevel(LogLevel.Trace);
                 builder.AddNLog(new NLogProviderOptions
                 {
                     CaptureMessageProperties = true,
@@ -36,7 +36,7 @@ namespace Impulse.Helpers
 
             services.AddTransient<BuyDeepSellHighJob>();
             services.AddTransient<IStorage>(service => new FileStorage(strategy.StoragePath));
-            services.AddTransient<ICalculations, CalculationsAvarage>();
+            services.AddTransient<IMarket, ConditionMarket>();
 
             return services.BuildServiceProvider();
         }

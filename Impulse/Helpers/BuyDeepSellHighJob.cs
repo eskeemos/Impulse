@@ -1,4 +1,5 @@
 ﻿using Binance.Net;
+using Impulse.Shared.Contexts;
 using Impulse.Shared.Domain.Service;
 using Impulse.Shared.Domain.Templates;
 using NLog;
@@ -23,7 +24,7 @@ namespace Impulse.Helpers
 
         private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
         private readonly IStorage storage;
-        private readonly ICalculations calculations;
+        private readonly IMarket market;
 
         #endregion
 
@@ -34,10 +35,10 @@ namespace Impulse.Helpers
         /// </summary>
         /// <param name="_storage">Storage referention</param>
         /// <param name="_calculations">Calculations referention</param>
-        public BuyDeepSellHighJob(IStorage _storage, ICalculations _calculations)
+        public BuyDeepSellHighJob(IStorage _storage, IMarket _market)
         {
             storage = _storage;
-            calculations = _calculations;
+            market = _market;
         }
 
         #endregion
@@ -57,19 +58,21 @@ namespace Impulse.Helpers
 
             using (var client = new BinanceClient())
             {
-                var avgPrice = await client.Spot.Market.GetCurrentAvgPriceAsync(strategyInfo.Symbol);
+                var ticker = new Ticker(client);
+
+                var avgPrice = await ticker.GetPrice(strategyInfo);
 
                 if (avgPrice.Success)
                 {
-                    var price = avgPrice.Data.Price;
-                    var storedAvarage = calculations.CountAvarange(storage.GetValues());
-
-                    logger.Info($"IM[{avgPrice.Data.Minutes}]|CP[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{Math.Round(price, 4)}]");
-                    logger.Info($"AVG PRICE : {Math.Round(storedAvarage, 4)}");
+                    var price = avgPrice.Result;
 
                     storage.SaveValue(price);
 
-                    var buyCondition = calculations.YesToBuy(strategyInfo.Rise, storedAvarage, price);
+                    var storedAvarage = Average.CountAverage(storage.GetValues(), strategyInfo.Average);
+
+                    logger.Info($"IM[{strategy.IntervalInMinutes}]|SN[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{Math.Round(price,4)}]");
+                    logger.Info($"Average price for last {strategyInfo.Average} is {Math.Round(storedAvarage, 4)}");
+                    var buyCondition = market.YesToBuy(strategyInfo.Rise, storedAvarage, price);
 
                     if(buyCondition)
                     {
@@ -79,7 +82,7 @@ namespace Impulse.Helpers
                 }
                 else
                 {
-                    logger.Warn(avgPrice.Error.Message);
+                    logger.Warn(avgPrice.Message);
                 }
             }
         }

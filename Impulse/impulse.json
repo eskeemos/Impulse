@@ -9,14 +9,16 @@
   ],
   "Strategy": {
     "ActiveId": 1,
-    "IntervalInMinutes": 1,
+    "IntervalInMinutes": 5,
     "StrategiesData": [
       {
         "Id": 1,
         "Symbol": "ETHUSDT",
         "StoragePath": "c:\\impulse\\intervalAvarages.txt",
+        "Average": 5,
+        "ticker":  0,
         "Rise": 5,
-        "AskRatio": 10
+        "Drop": 10
       }
     ]
   }

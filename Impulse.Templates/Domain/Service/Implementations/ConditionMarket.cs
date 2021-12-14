@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Impulse.Shared.Domain.Service.Implementations
 {
-    public class CalculationsAvarage : ICalculations
+    public class ConditionMarket : IMarket
     {
         #region Implemented functions
 
-        public decimal CountAvarange(IEnumerable<decimal> values)
-            => values.Average();
-        
         public bool YesToBuy(int priceDrop, decimal storedAvarage, decimal price)
             => (storedAvarage > price) 
                 ? 100 - (price / storedAvarage * 100) >= priceDrop

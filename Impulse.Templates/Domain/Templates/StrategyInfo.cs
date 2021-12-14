@@ -26,5 +26,15 @@
         /// Condition how much the price must drop(in percentage)
         /// </summary>
         public int Drop { get; set; }
+
+        /// <summary>
+        /// Calculated avarage 
+        /// </summary>
+        public int Average { get; set; }
+        
+        /// <summary>
+        /// Condition to count interval avg or curr value
+        /// </summary>
+        public int Ticker { get; set; }
     }
 }   

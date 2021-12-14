@@ -468,6 +468,9 @@
       "Impulse.Shared/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Binance.Net": "7.2.6"
+        },
         "compile": {
           "bin/placeholder/Impulse.Shared.dll": {}
         },

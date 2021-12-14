@@ -391,6 +391,9 @@
         }
       },
       "Impulse.Shared/1.0.0": {
+        "dependencies": {
+          "Binance.Net": "7.2.6"
+        },
         "runtime": {
           "Impulse.Shared.dll": {}
         }
