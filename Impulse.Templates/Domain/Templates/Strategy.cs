@@ -4,19 +4,20 @@ namespace Impulse.Shared.Domain.Templates
 {
     public class Strategy
     {
-        /// <summary>
-        /// Strategy id
-        /// </summary>
+        // TODO
         public int ActiveId { get; set; }
 
-        /// <summary>
-        /// Register interval
-        /// </summary>
+        // TODO
         public int IntervalInMinutes { get; set; }
 
-        /// <summary>
-        /// Collection of strategies info
-        /// </summary>
+        // TODO
         public IEnumerable<StrategyInfo> StrategiesData { get; set; }
+
+        // TODO
+        public int TestMode { get; set; }
+
+        // TODO
+        public bool IsNotTestMode => TestMode == 0;
+
     }
 }

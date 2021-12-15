@@ -22,8 +22,6 @@ namespace Impulse.Helpers
         {
             ServiceCollection services = new ServiceCollection();
 
-            var strategy = app.Strategy.StrategiesData.FirstOrDefault(s => s.Id == app.Strategy.ActiveId);
-
             services.AddLogging(builder =>
             {
                  builder.SetMinimumLevel(LogLevel.Trace);
@@ -35,7 +33,7 @@ namespace Impulse.Helpers
             });
 
             services.AddTransient<BuyDeepSellHighJob>();
-            services.AddTransient<IStorage>(service => new FileStorage(strategy.StoragePath));
+            services.AddTransient<IStorage, FileStorage>();
             services.AddTransient<IMarket, ConditionMarket>();
 
             return services.BuildServiceProvider();

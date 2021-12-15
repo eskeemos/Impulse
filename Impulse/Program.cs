@@ -1,10 +1,15 @@
-﻿using Impulse.Helpers;
+﻿using Binance.Net;
+using Binance.Net.Objects;
+using CryptoExchange.Net.Authentication;
+using Impulse.Helpers;
 using Impulse.Shared.Domain.Templates;
 using Microsoft.Extensions.Configuration;
 using Quartz;
 using Quartz.Impl;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Impulse
@@ -52,11 +57,17 @@ namespace Impulse
 
                 await scheduler.Start();
 
+                var exchange = (app.Exchanges as IList<Exchange>).FirstOrDefault();
+
+                BinanceClient.SetDefaultOptions(new BinanceClientOptions()
+                {
+                    ApiCredentials = new ApiCredentials(exchange.ApiKey, exchange.ApiSecret)
+                });
+
                 IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
                     .WithIdentity("BuyDeepSellHighJob").Build();
 
                 jobDetail.JobDataMap["Strategy"] = app.Strategy;
-                jobDetail.JobDataMap["Exchanges"] = app.Exchanges;
 
                 var tBuilder = TriggerBuilder.Create()
                     .WithIdentity("BuyDeepSellHighJobTrigger").StartNow();

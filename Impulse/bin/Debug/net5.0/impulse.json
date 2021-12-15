@@ -2,7 +2,7 @@
   "Name": "impulse",
   "Exchanges": [
     {
-      "name": "binance",
+      "name": "Binance",
       "apikey": "VrOP0z7jyQLtuYuFsTlehn5TORwkDqcwO0dUDnTz98CmCRXHMsXKL4OBAjNkLCyA",
       "apisecret": "qKyiKhHTzA3AwGVLyh3gQEBzH4ORXrmeYDTV4GQ1al7Di6pb33gsLH18FGH8O3WH"
     }
@@ -10,11 +10,12 @@
   "Strategy": {
     "ActiveId": 1,
     "IntervalInMinutes": 5,
+    "testmode": 1,
     "StrategiesData": [
       {
         "Id": 1,
-        "Symbol": "ETHUSDT",
-        "StoragePath": "c:\\impulse\\intervalAvarages.txt",
+        "Symbol": "TRXXRP",
+        "StoragePath": "c:\\impulse\\",
         "Average": 5,
         "ticker":  0,
         "Rise": 5,

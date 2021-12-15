@@ -8,23 +8,8 @@ namespace Impulse.Shared.Domain.Service.Implementations
     {
         #region Variables
 
-        /// <summary>
-        /// Storage path
-        /// </summary>
-        private readonly string storagePath;
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Set up variables
-        /// </summary>
-        /// <param name="_storagePath">Storage path</param>
-        public FileStorage(string _storagePath)
-        {
-            storagePath = _storagePath;
-        }
+        // TODO
+        private string storagePath;
 
         #endregion
 
@@ -55,5 +40,10 @@ namespace Impulse.Shared.Domain.Service.Implementations
         }
 
         #endregion
+
+        public void SetPath(string path)
+        {
+            storagePath = path;
+        }
     }
 }

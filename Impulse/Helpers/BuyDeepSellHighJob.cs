@@ -1,11 +1,14 @@
 ﻿using Binance.Net;
+using Binance.Net.Enums;
 using Impulse.Shared.Contexts;
 using Impulse.Shared.Domain.Service;
+using Impulse.Shared.Domain.Statics;
 using Impulse.Shared.Domain.Templates;
 using NLog;
 using Quartz;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,74 +23,124 @@ namespace Impulse.Helpers
 
     public class BuyDeepSellHighJob : IJob
     {
-        #region Variables
 
         private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
         private readonly IStorage storage;
         private readonly IMarket market;
 
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Set up variables
-        /// </summary>
-        /// <param name="_storage">Storage referention</param>
-        /// <param name="_calculations">Calculations referention</param>
         public BuyDeepSellHighJob(IStorage _storage, IMarket _market)
         {
             storage = _storage;
             market = _market;
         }
 
-        #endregion
-
-        #region Public
-
-        /// <summary>
-        /// Using the binance client causes data register into targets
-        /// </summary>
-        /// <param name="context">Task context</param>
-        /// <returns>Logger act</returns>
         public async Task Execute(IJobExecutionContext context)
         {
-            Exchange exchange = (context.JobDetail.JobDataMap["Exchanges"] as IList<Exchange>).FirstOrDefault();
             Strategy strategy = context.JobDetail.JobDataMap["Strategy"] as Strategy;
             StrategyInfo strategyInfo = strategy.StrategiesData.FirstOrDefault(item => item.Id == strategy.ActiveId);
 
-            using (var client = new BinanceClient())
+            if (!(strategyInfo is null))
             {
-                var ticker = new Ticker(client);
+                storage.SetPath(Path.Combine(strategyInfo.StoragePath, $"{strategyInfo.Symbol}.txt"));
 
-                var avgPrice = await ticker.GetPrice(strategyInfo);
-
-                if (avgPrice.Success)
+                using (var client = new BinanceClient())
                 {
-                    var price = avgPrice.Result;
+                    var ticker = new Ticker(client);
+                    var account = await client.General.GetAccountInfoAsync();
 
-                    storage.SaveValue(price);
-
-                    var storedAvarage = Average.CountAverage(storage.GetValues(), strategyInfo.Average);
-
-                    logger.Info($"IM[{strategy.IntervalInMinutes}]|SN[{strategyInfo.Symbol}]|PN[{exchange.Name}]|PR[{price}]");
-                    logger.Info($"Average price for last {strategyInfo.Average} is {Math.Round(storedAvarage, 2)}");
-                    var buyCondition = market.YesToBuy(strategyInfo.Rise, storedAvarage, price);
-
-                    if(buyCondition)
+                    if(account.Success)
                     {
+                        var exchangeInfo = await client.Spot.System.GetExchangeInfoAsync();
 
+                        if(exchangeInfo.Success)
+                        {
+                            var symbol = exchangeInfo.Data.Symbols.FirstOrDefault((s) => s.Name == strategyInfo.Symbol);
+
+                            if (!(symbol is null) && symbol.Status == SymbolStatus.Trading)
+                            {
+                                var baseAsset = symbol.BaseAsset;
+                                var quoteAsset = symbol.QuoteAsset;
+
+                                var currentPrice = await ticker.GetPrice(strategyInfo);
+
+                                if(currentPrice.Success)
+                                {
+                                    var price = currentPrice.Result;
+
+                                    var baseA = account.Data.Balances.FirstOrDefault(x => x.Asset == baseAsset).Free;
+                                    var quoteA = account.Data.Balances.FirstOrDefault(x => x.Asset == quoteAsset).Free;
+
+                                    logger.Info(LogGenerator.CurrentPrice(strategyInfo, price));
+
+                                    storage.SaveValue(price);
+
+                                    var storedAvg = Average.CountAverage(storage.GetValues(), 8, strategyInfo.Average);
+
+                                    logger.Info(LogGenerator.AveragePrice(strategyInfo, storedAvg));
+
+                                    if(quoteA > 0.0m && quoteA > symbol.MinNotionalFilter.MinNotional)
+                                    {
+                                        var buyOrder = market.YesToBuy(strategyInfo.Drop, storedAvg, price);
+
+                                        logger.Info(LogGenerator.BuyOrder(buyOrder));
+
+                                        if(buyOrder.IsReadyForMarket)
+                                        {
+                                            logger.Info(LogGenerator.BuyOrderReady(price, buyOrder, strategyInfo));
+
+                                            if (strategy.IsNotTestMode)
+                                            {
+                                                var buyOrderResult = await client.Spot.Order.PlaceOrderAsync(
+                                                    strategyInfo.Symbol,
+                                                    OrderSide.Buy, 
+                                                    OrderType.Market,
+                                                    quoteOrderQuantity: quoteA
+                                                    );
+
+                                                if(buyOrderResult.Success)
+                                                {
+                                                    logger.Info(LogGenerator.BuyResultStart(buyOrderResult.Data.OrderId));
+
+                                                    foreach (var item in buyOrderResult.Data.Fills)
+                                                    {
+                                                        logger.Info(LogGenerator.BuyResult(item));
+                                                    }
+
+                                                    logger.Info(LogGenerator.BuyResultEnd(buyOrderResult.Data.OrderId));
+                                                }
+                                                else
+                                                {
+                                                    logger.Warn(buyOrderResult.Error.Message);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                logger.Info(LogGenerator.BuyTest);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        logger.Warn(LogGenerator.WarnFilterMinNational(quoteAsset, quoteA, symbol.MinNotionalFilter.MinNotional));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                logger.Warn(LogGenerator.WarnSymbol(strategyInfo.Symbol));
+                            }
+                        }
                     }
-
-                }
-                else
-                {
-                    logger.Warn(avgPrice.Message);
+                    else
+                    {
+                        logger.Warn(LogGenerator.WarnKeys);
+                    }
                 }
             }
+            else
+            {
+                logger.Warn(LogGenerator.WarnStrategy);
+            }
         }
-
-        #endregion
     }
-
 }

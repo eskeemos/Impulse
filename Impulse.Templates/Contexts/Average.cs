@@ -7,13 +7,13 @@ namespace Impulse.Shared.Contexts
     {
         #region Public
 
-        public static decimal CountAverage(IEnumerable<decimal> values, int last = 0)
+        public static decimal CountAverage(IEnumerable<decimal> values, int round, int last = 0)
         {
             decimal res = (last == 0)
                 ? values.Average()
                 : values.Count() > last ? values.TakeLast(last).Average() : values.Average();
 
-            return res;
+            return decimal.Round(res, round);
         }
 
         #endregion
