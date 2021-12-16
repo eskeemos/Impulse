@@ -32,6 +32,18 @@ namespace Impulse.Shared.Domain.Statics
             => "Sold in test mode";
 
         // TODO
+        public static string SellResultStart(long orderId)
+            => $"Start selling order ({orderId})";
+
+        // TODO
+        public static string SellResult(BinanceOrderTrade item)
+            => $"Order filled with Quantity ({item.Quantity}), Price ({item.Price}, Commision ({item.Commission} {item.CommissionAsset}))";
+
+        // TODO
+        public static string SellResultEnd(long orderId)
+            => $"End selling order ({orderId})";
+
+        // TODO
         public static string BuyOrder(MarketResponse marketResponse)
             => $"Buy order ({marketResponse.IsReadyForMarket}), price change ({marketResponse.PercentChanged})%";
 
@@ -45,7 +57,7 @@ namespace Impulse.Shared.Domain.Statics
 
         // TODO
         public static string BuyResultStart(long orderId)
-            => $"Start order ({orderId})";
+            => $"Start buying order ({orderId})";
 
         // TODO
         public static string BuyResult(BinanceOrderTrade item)
@@ -53,7 +65,7 @@ namespace Impulse.Shared.Domain.Statics
 
         // TODO
         public static string BuyResultEnd(long orderId)
-            => $"End order ({orderId})";
+            => $"End buying order ({orderId})";
 
         // TODO
         public static string WarnSymbol(string symbol)

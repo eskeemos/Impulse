@@ -73,7 +73,7 @@ namespace Impulse
                     .WithIdentity("BuyDeepSellHighJobTrigger").StartNow();
 
                 tBuilder.WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(5).RepeatForever());
+                    .WithIntervalInMinutes(5).RepeatForever());
 
                 var bTrigger = tBuilder.Build();
 

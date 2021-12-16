@@ -4,10 +4,9 @@ using Impulse.Shared.Contexts;
 using Impulse.Shared.Domain.Service;
 using Impulse.Shared.Domain.Statics;
 using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Extensions;
 using NLog;
 using Quartz;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -78,6 +77,50 @@ namespace Impulse.Helpers
 
                                     logger.Info(LogGenerator.AveragePrice(strategyInfo, storedAvg));
 
+                                    if(baseA > 0.0m)
+                                    {
+                                        var sellOrder = market.YesToSell(strategyInfo.Rise, storedAvg, price);
+
+                                        logger.Info(LogGenerator.SellOrder(sellOrder));
+
+                                        if(sellOrder.IsReadyForMarket)
+                                        {
+                                            logger.Info(LogGenerator.SellOrderReady(price, sellOrder, strategyInfo));
+
+                                            if(strategy.IsNotTestMode)
+                                            {
+                                                var sellOrderResult = await client.Spot.Order.PlaceOrderAsync(
+                                                    strategyInfo.Symbol,
+                                                    OrderSide.Sell,
+                                                    OrderType.Market,
+                                                    quantity: baseA);
+
+                                                if(sellOrderResult.Success)
+                                                {
+                                                    logger.Info(LogGenerator.SellResultStart(sellOrderResult.Data.OrderId));
+
+                                                    if(sellOrderResult.Data.Fills.AnyAndNotNull())
+                                                    {
+                                                        foreach (var item in sellOrderResult.Data.Fills)
+                                                        {
+                                                            logger.Info(LogGenerator.SellResult(item));
+                                                        }
+                                                    }
+
+                                                    logger.Info(LogGenerator.SellResultEnd(sellOrderResult.Data.OrderId));
+                                                }
+                                                else
+                                                {
+                                                    logger.Info(sellOrderResult.Error.Message);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                logger.Info(LogGenerator.SellTest);
+                                            }
+                                        }
+                                    }
+
                                     if(quoteA > 0.0m && quoteA > symbol.MinNotionalFilter.MinNotional)
                                     {
                                         var buyOrder = market.YesToBuy(strategyInfo.Drop, storedAvg, price);
@@ -101,9 +144,12 @@ namespace Impulse.Helpers
                                                 {
                                                     logger.Info(LogGenerator.BuyResultStart(buyOrderResult.Data.OrderId));
 
-                                                    foreach (var item in buyOrderResult.Data.Fills)
+                                                    if(buyOrderResult.Data.Fills.AnyAndNotNull())
                                                     {
-                                                        logger.Info(LogGenerator.BuyResult(item));
+                                                        foreach (var item in buyOrderResult.Data.Fills)
+                                                        {
+                                                            logger.Info(LogGenerator.BuyResult(item));
+                                                        }
                                                     }
 
                                                     logger.Info(LogGenerator.BuyResultEnd(buyOrderResult.Data.OrderId));
