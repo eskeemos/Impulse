@@ -10,5 +10,8 @@ namespace Impulse.Shared.Domain.Service
 
         // TODO
         MarketResponse YesToSell(int conditionRise, decimal storedAvarage, decimal price);
+
+        // TODO
+        MarketResponse YesToStopLose(int percentStopLose, decimal storedAvarage, decimal price);
     }
 }

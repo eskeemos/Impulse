@@ -14,12 +14,13 @@
     "StrategiesData": [
       {
         "Id": 1,
-        "Symbol": "TRXXRP",
+        "Symbol": "XRPUSDT",
         "StoragePath": "c:\\impulse\\",
         "Average": 5,
-        "ticker":  0,
+        "ticker": 0,
         "Rise": 5,
-        "Drop": 10
+        "Drop": 10,
+        "stoplosepercentagedown": 10
       }
     ]
   }

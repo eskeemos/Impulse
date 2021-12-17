@@ -16,5 +16,8 @@
         /// Api secret key from platform
         /// </summary>
         public string ApiSecret { get; set; }
+
+        public bool IsInTestMode
+            => string.IsNullOrWhiteSpace(ApiKey) || string.IsNullOrWhiteSpace(ApiSecret);
     }
 }

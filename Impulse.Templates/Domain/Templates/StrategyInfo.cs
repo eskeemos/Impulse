@@ -36,5 +36,7 @@
         /// Condition to count interval avg or curr value
         /// </summary>
         public int Ticker { get; set; }
+
+        public int StopLosePercentageDown { get; set; }
     }
 }   

@@ -81,6 +81,24 @@ namespace Impulse.Shared.Domain.Statics
 
         // TODO
         public static string WarnFilterMinNational(string quoteAsset, decimal availableQuote, decimal min)
-            => $"Not enough {quoteAsset} ({availableQuote}), needed at least ({min})";
+            => $"Not enough {quoteAsset} ({availableQuote}), needed at least ({min})"; 
+
+        public static string StopLoseOrder(MarketResponse marketResponse)
+            => $"Stop lose order ({marketResponse.IsReadyForMarket}), price change ({marketResponse.PercentChanged})";
+
+        public static string StopLoseOrderReady(decimal price, MarketResponse marketResponse, StrategyInfo strategy)
+            => $"Price ({price}) dropped ({marketResponse.PercentChanged}%) > ({strategy.StopLosePercentageDown}%), selling all {strategy.Symbol}";
+
+        public static string StopLossTest 
+            => "Stop lose in test mode";
+
+        public static string StopLoseResultStart(long orderId)
+            => $"(Stop lose) start selling order ({orderId})";
+
+        public static string StopLoseResult(BinanceOrderTrade item)
+            => $"Order filled with quantity ({item.Quantity}), price ({item.Price}), commision ({item.Commission} {item.CommissionAsset})";
+
+        public static string StopLoseResultEnd(long orderId)
+            => $"(Stop lose) end selling order ({orderId})";
     }
 }

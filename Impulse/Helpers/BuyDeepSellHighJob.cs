@@ -2,6 +2,7 @@
 using Binance.Net.Enums;
 using Impulse.Shared.Contexts;
 using Impulse.Shared.Domain.Service;
+using Impulse.Shared.Domain.Service.Implementations;
 using Impulse.Shared.Domain.Statics;
 using Impulse.Shared.Domain.Templates;
 using Impulse.Shared.Extensions;
@@ -77,8 +78,55 @@ namespace Impulse.Helpers
 
                                     logger.Info(LogGenerator.AveragePrice(strategyInfo, storedAvg));
 
-                                    if(baseA > 0.0m)
+                                    if(baseA > 0.0m && baseA > symbol.MinNotionalFilter.MinNotional)
                                     {
+                                        var stopLossOrder = market.YesToStopLose(strategyInfo.StopLosePercentageDown, storedAvg, price);
+
+                                        logger.Info(LogGenerator.StopLoseOrder(stopLossOrder));
+
+                                        if(strategy.IsNotTestMode)
+                                        {
+                                            var quantity = BinanceHelpers.ClampQuantity(symbol.LotSizeFilter.MinQuantity, symbol.LotSizeFilter.MaxQuantity, symbol.LotSizeFilter.StepSize, baseA);
+                                            var stopLosePrice = BinanceHelpers.ClampPrice(symbol.PriceFilter.MinPrice, symbol.PriceFilter.MaxPrice, price);
+                                            var minNational = quantity * stopLosePrice;
+
+                                            if(minNational > symbol.MinNotionalFilter.MinNotional)
+                                            {
+                                                var stopLoseOrderResult = await client.Spot.Order.PlaceOrderAsync(
+                                                    strategyInfo.Symbol,
+                                                    OrderSide.Sell,
+                                                    OrderType.StopLossLimit,
+                                                    quantity: quantity,
+                                                    stopPrice: BinanceHelpers.FloorPrice(symbol.PriceFilter.TickSize, stopLosePrice),
+                                                    price: BinanceHelpers.FloorPrice(symbol.PriceFilter.TickSize, stopLosePrice),
+                                                    timeInForce: TimeInForce.GoodTillCancel);
+
+                                                if(stopLoseOrderResult.Success)
+                                                {
+                                                    logger.Info(LogGenerator.StopLoseResultStart(stopLoseOrderResult.Data.OrderId));
+
+                                                    if(stopLoseOrderResult.Data.Fills.AnyAndNotNull())
+                                                    {
+                                                        foreach (var item in stopLoseOrderResult.Data.Fills)
+                                                        {
+                                                            logger.Info(LogGenerator.StopLoseResult(item));
+                                                        }
+                                                    }
+
+                                                    logger.Info(LogGenerator.StopLoseResultEnd(stopLoseOrderResult.Data.OrderId));
+                                                }
+                                                else
+                                                {
+                                                    logger.Warn(stopLoseOrderResult.Error.Message);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            logger.Info(LogGenerator.StopLossTest);
+                                        }
+
+                                        // sell def
                                         var sellOrder = market.YesToSell(strategyInfo.Rise, storedAvg, price);
 
                                         logger.Info(LogGenerator.SellOrder(sellOrder));

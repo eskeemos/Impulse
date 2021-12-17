@@ -4,6 +4,7 @@ using CryptoExchange.Net.Authentication;
 using Impulse.Helpers;
 using Impulse.Shared.Domain.Templates;
 using Microsoft.Extensions.Configuration;
+using NLog;
 using Quartz;
 using Quartz.Impl;
 using System;
@@ -22,6 +23,7 @@ namespace Impulse
         private static readonly string fileName = $"{appName}-{DateTime.UtcNow:ddMMyyyy}.log";
         private static IScheduler scheduler;
         private static ISchedulerFactory schedulerFactory;
+        private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
 
         #endregion
 
@@ -59,10 +61,17 @@ namespace Impulse
 
                 var exchange = (app.Exchanges as IList<Exchange>).FirstOrDefault();
 
-                BinanceClient.SetDefaultOptions(new BinanceClientOptions()
+                if(exchange.IsInTestMode)
                 {
-                    ApiCredentials = new ApiCredentials(exchange.ApiKey, exchange.ApiSecret)
-                });
+                    logger.Warn($"No ApiKey or ApiSecret provided, be sure to set 'testmode' = 1 in impulse.json file");
+                }
+                else
+                {
+                    BinanceClient.SetDefaultOptions(new BinanceClientOptions()
+                    {
+                        ApiCredentials = new ApiCredentials(exchange.ApiKey, exchange.ApiSecret)
+                    });
+                }
 
                 IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
                     .WithIdentity("BuyDeepSellHighJob").Build();

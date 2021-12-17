@@ -28,6 +28,17 @@ namespace Impulse.Shared.Domain.Service.Implementations
             };
         }
 
+        public MarketResponse YesToStopLose(int percentStopLose, decimal storedAvarage, decimal price)
+        {
+            return new MarketResponse
+            {
+                IsReadyForMarket = storedAvarage > price
+                ? 100 - (price / storedAvarage * 100) >= percentStopLose
+                : false,
+                PercentChanged = decimal.Round(100 - (price / storedAvarage * 100), 2)
+            };
+        }
+
         #endregion
     }
 }
