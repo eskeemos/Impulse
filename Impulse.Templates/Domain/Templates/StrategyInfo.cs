@@ -39,6 +39,8 @@
 
         public int StopLosePercentageDown { get; set; }
 
-        public int FundPercentage { get; set; } 
+        public int FundPercentage { get; set; }
+
+        public int StopLoseType { get; set; }
     }
 }   

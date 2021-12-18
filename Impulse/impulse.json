@@ -14,14 +14,15 @@
     "StrategiesData": [
       {
         "Id": 1,
-        "Symbol": "XRPUSDT",
+        "Symbol": "ETHBTC",
         "StoragePath": "c:\\impulse\\",
         "Average": 5,
         "ticker": 0,
         "Rise": 5,
         "Drop": 10,
         "stoplosepercentagedown": 10,
-        "fundpercentage":  100
+        "fundpercentage": 100,
+        "stoplosstype": 0
       }
     ]
   }

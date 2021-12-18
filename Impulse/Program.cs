@@ -11,30 +11,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 
 namespace Impulse
 {
     class Program
     {
-        #region Variables
         
+
         private static readonly string appName = "impulse";
         private static readonly string fileName = $"{appName}-{DateTime.UtcNow:ddMMyyyy}.log";
         private static IScheduler scheduler;
         private static ISchedulerFactory schedulerFactory;
         private static readonly Logger logger = LogManager.GetLogger("IMPULSE");
 
-        #endregion
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
 
-        #region Main
-
-        /// <summary>
-        /// Obtain all necessary data, configure and plan systematic activity
-        /// </summary>
-        /// <returns>App</returns>
         static async Task<int> Main()
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHandler);
+
             NLog.LogManager.Configuration.Variables["fileName"] = fileName;
             NLog.LogManager.Configuration.Variables["archiveFileName"] = fileName;
 
@@ -92,9 +90,9 @@ namespace Impulse
 
                 Console.ReadKey();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                logger.Fatal($"{e.Message}");
             }
 
             NLog.LogManager.Shutdown();
@@ -102,6 +100,11 @@ namespace Impulse
             return 0;
         }
 
-        #endregion
+        static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception)args.ExceptionObject;
+            logger.Fatal($"{e.Message}");
+            logger.Fatal($"{args.IsTerminating}");
+        }
     }
 }

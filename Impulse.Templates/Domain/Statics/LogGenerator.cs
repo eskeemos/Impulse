@@ -13,7 +13,7 @@ namespace Impulse.Shared.Domain.Statics
     {
         // TODO
         public static string CurrentPrice(StrategyInfo strategyInfo, decimal price, decimal availableQuote)
-            => $"Current price for {strategyInfo.Symbol} is {price}. Available to trade";
+            => $"Current price for {strategyInfo.Symbol} is {price}. Available to trade: {availableQuote} ({strategyInfo.FundPercentage}%)";
 
         // TODO
         public static string AveragePrice(StrategyInfo strategyInfo, decimal storedPriceAverage)
@@ -83,22 +83,22 @@ namespace Impulse.Shared.Domain.Statics
         public static string WarnFilterMinNational(string quoteAsset, decimal availableQuote, decimal min)
             => $"Not enough {quoteAsset} ({availableQuote}), needed at least ({min})"; 
 
-        public static string StopLoseOrder(MarketResponse marketResponse)
+        public static string StopLossOrder(MarketResponse marketResponse)
             => $"Stop lose order ({marketResponse.IsReadyForMarket}), price change ({marketResponse.PercentChanged})";
 
-        public static string StopLoseOrderReady(decimal price, MarketResponse marketResponse, StrategyInfo strategy)
+        public static string StopLossOrderReady(decimal price, MarketResponse marketResponse, StrategyInfo strategy)
             => $"Price ({price}) dropped ({marketResponse.PercentChanged}%) > ({strategy.StopLosePercentageDown}%), selling all {strategy.Symbol}";
 
         public static string StopLossTest 
             => "Stop lose in test mode";
 
-        public static string StopLoseResultStart(long orderId)
+        public static string StopLossResultStart(long orderId)
             => $"(Stop lose) start selling order ({orderId})";
 
-        public static string StopLoseResult(BinanceOrderTrade item)
+        public static string StopLossResult(BinanceOrderTrade item)
             => $"Order filled with quantity ({item.Quantity}), price ({item.Price}), commision ({item.Commission} {item.CommissionAsset})";
 
-        public static string StopLoseResultEnd(long orderId)
+        public static string StopLossResultEnd(long orderId)
             => $"(Stop lose) end selling order ({orderId})";
     }
 }
