@@ -20,7 +20,8 @@
         "ticker": 0,
         "Rise": 5,
         "Drop": 10,
-        "stoplosepercentagedown": 10
+        "stoplosepercentagedown": 10,
+        "fundpercentage":  100
       }
     ]
   }

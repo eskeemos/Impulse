@@ -1,9 +1,25 @@
 ﻿using Impulse.Shared.Domain.Service.Response;
+using Impulse.Shared.Service.Response;
 
 namespace Impulse.Shared.Domain.Service.Implementations
 {
     public class ConditionMarket : IMarket
     {
+        public FundResponse AvailableQuote(int fundPercentage, decimal availableQuote, int precision)
+        {
+            var result = new FundResponse();
+
+            if(fundPercentage >= 0 && fundPercentage <= 100)
+            {
+                result.QuoteAssetToTrade = decimal.Round(availableQuote * fundPercentage / 100, precision);
+            }
+            else
+            {
+                result.QuoteAssetToTrade = availableQuote;
+            }
+
+            return result;
+        }
         #region Implemented functions
 
         public MarketResponse YesToBuy(int priceDrop, decimal storedAvarage, decimal price)

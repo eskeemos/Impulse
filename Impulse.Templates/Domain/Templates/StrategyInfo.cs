@@ -38,5 +38,7 @@
         public int Ticker { get; set; }
 
         public int StopLosePercentageDown { get; set; }
+
+        public int FundPercentage { get; set; } 
     }
 }   

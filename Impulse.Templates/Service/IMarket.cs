@@ -1,4 +1,5 @@
 ﻿using Impulse.Shared.Domain.Service.Response;
+using Impulse.Shared.Service.Response;
 
 namespace Impulse.Shared.Domain.Service
 {
@@ -13,5 +14,7 @@ namespace Impulse.Shared.Domain.Service
 
         // TODO
         MarketResponse YesToStopLose(int percentStopLose, decimal storedAvarage, decimal price);
+
+        FundResponse AvailableQuote(int fundPercentage, decimal availableQuote, int precision);
     }
 }

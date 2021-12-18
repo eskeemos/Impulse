@@ -12,8 +12,8 @@ namespace Impulse.Shared.Domain.Statics
     public class LogGenerator
     {
         // TODO
-        public static string CurrentPrice(StrategyInfo strategyInfo, decimal price)
-            => $"Current price for {strategyInfo.Symbol} is {price}";
+        public static string CurrentPrice(StrategyInfo strategyInfo, decimal price, decimal availableQuote)
+            => $"Current price for {strategyInfo.Symbol} is {price}. Available to trade";
 
         // TODO
         public static string AveragePrice(StrategyInfo strategyInfo, decimal storedPriceAverage)

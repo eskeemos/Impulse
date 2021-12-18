@@ -70,7 +70,9 @@ namespace Impulse.Helpers
                                     var baseA = account.Data.Balances.FirstOrDefault(x => x.Asset == baseAsset).Free;
                                     var quoteA = account.Data.Balances.FirstOrDefault(x => x.Asset == quoteAsset).Free;
 
-                                    logger.Info(LogGenerator.CurrentPrice(strategyInfo, price));
+                                    quoteA = market.AvailableQuote(strategyInfo.FundPercentage, quoteA, symbol.QuoteAssetPrecision).QuoteAssetToTrade;
+
+                                    logger.Info(LogGenerator.CurrentPrice(strategyInfo, price, quoteA));
 
                                     storage.SaveValue(price);
 
