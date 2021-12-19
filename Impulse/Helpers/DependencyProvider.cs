@@ -1,4 +1,4 @@
-﻿using Impulse.Shared.Domain.Service;
+﻿using Impulse.Shared.Service;
 using Impulse.Shared.Service;
 using Impulse.Shared.Service.Implementations;
 using Impulse.Shared.Templates;

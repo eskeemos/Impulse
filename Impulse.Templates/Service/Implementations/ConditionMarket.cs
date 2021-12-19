@@ -19,7 +19,6 @@ namespace Impulse.Shared.Service.Implementations
 
             return result;
         }
-        #region Implemented functions
 
         public MarketResponse YesToBuy(int priceDrop, decimal storedAvarage, decimal price)
         {
@@ -53,7 +52,5 @@ namespace Impulse.Shared.Service.Implementations
                 PercentChanged = decimal.Round(100 - (price / storedAvarage * 100), 2)
             };
         }
-
-        #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using Impulse.Shared.Domain.Service;
+﻿using Impulse.Shared.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +7,7 @@ namespace Impulse.Shared.Service.Implementations
 {
     public class FileStorage : IStorage
     {
-        #region Variables
-
-        // TODO
         private string storagePath;
-
-        #endregion
-
-        #region Implemented functions
-
         public ICollection<decimal> GetValues()
         {
             var list = new List<decimal>();
@@ -39,8 +31,6 @@ namespace Impulse.Shared.Service.Implementations
 
             writer.WriteLine(value);
         }
-
-        #endregion
 
         public void SetPath(string path)
         {

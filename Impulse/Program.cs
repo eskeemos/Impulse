@@ -59,7 +59,7 @@ namespace Impulse
 
                 var exchange = (app.Exchanges as IList<Exchange>).FirstOrDefault();
 
-                if(exchange.IsInTestMode)
+                if(!exchange.ApiKeyProvided)
                 {
                     logger.Warn($"No ApiKey or ApiSecret provided, be sure to set 'testmode' = 1 in impulse.json file");
                 }
@@ -74,7 +74,7 @@ namespace Impulse
                 IJobDetail jobDetail = JobBuilder.Create<BuyDeepSellHighJob>()
                     .WithIdentity("BuyDeepSellHighJob").Build();
 
-                jobDetail.JobDataMap["Strategy"] = app.Strategy;
+                jobDetail.JobDataMap["Main"] = app.Main;
 
                 var tBuilder = TriggerBuilder.Create()
                     .WithIdentity("BuyDeepSellHighJobTrigger").StartNow();

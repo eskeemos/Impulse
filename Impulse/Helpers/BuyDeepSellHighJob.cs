@@ -3,8 +3,8 @@ using Binance.Net.Enums;
 using Binance.Net.Objects.Spot.SpotData;
 using CryptoExchange.Net.Objects;
 using Impulse.Shared.Contexts;
-using Impulse.Shared.Domain.Service;
-using Impulse.Shared.Domain.Statics;
+using Impulse.Shared.Service;
+using Impulse.Shared.Statics;
 using Impulse.Shared.Templates;
 using Impulse.Shared.Extensions;
 using NLog;
@@ -13,7 +13,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Impulse.Shared.Service;
 
 namespace Impulse.Helpers
 {
@@ -41,8 +40,8 @@ namespace Impulse.Helpers
         {
             try
             {
-                Strategy strategy = context.JobDetail.JobDataMap["Strategy"] as Strategy;
-                StrategyInfo strategyInfo = strategy.StrategiesData.FirstOrDefault(item => item.Id == strategy.ActiveId);
+                Main main = context.JobDetail.JobDataMap["Main"] as Main;
+                Strategy strategyInfo = main.strategies.FirstOrDefault(item => item.Id == main.ActiveId);
 
                 if(!(strategyInfo is null))
                 {
@@ -74,21 +73,21 @@ namespace Impulse.Helpers
                                         var baseA = accountInfo.Data.Balances.FirstOrDefault(x => x.Asset == baseAsset).Free;
                                         var quoteA = accountInfo.Data.Balances.FirstOrDefault(x => x.Asset == quoteAsset).Free;
 
-                                        quoteA = market.AvailableQuote(strategyInfo.FundPercentage, quoteA, symbol.QuoteAssetPrecision).QuoteAssetToTrade;
+                                        quoteA = market.AvailableQuote(strategyInfo.PercentageResourceToPlay, quoteA, symbol.QuoteAssetPrecision).QuoteAssetToTrade;
 
-                                        logger.Info(LogGenerator.CurrentPrice(strategyInfo, price, quoteA));
+                                        logger.Info(LogGenerator.GetCurrentPriceInfo(strategyInfo, price));
 
                                         storage.SaveValue(price);
 
-                                        var storedAvg = Average.CountAverage(storage.GetValues(), 8, strategyInfo.Average);
+                                        var storedAvg = Average.CountAverage(storage.GetValues(), 8, strategyInfo.CountLastAverage);
 
-                                        logger.Info(LogGenerator.AveragePrice(strategyInfo, storedAvg));
+                                        logger.Info(LogGenerator.GetAveragePriceInfo(strategyInfo, storedAvg));
 
                                         // SELL BOTH
                                         if (baseA > 0.0m && baseA > symbol.MinNotionalFilter.MinNotional)
                                         {
                                             // STOP LOSE
-                                            var stopLossOrder = market.YesToStopLose(strategyInfo.StopLosePercentageDown, storedAvg, price);
+                                            var stopLossOrder = market.YesToStopLose(strategyInfo.PercentageStopLose, storedAvg, price);
 
                                             logger.Info(LogGenerator.StopLossOrder(stopLossOrder));
 
@@ -96,13 +95,13 @@ namespace Impulse.Helpers
                                             {
                                                 logger.Info(LogGenerator.StopLossOrderReady(price, stopLossOrder, strategyInfo));
 
-                                                if (strategy.IsNotTestMode)
+                                                if (main.TestMode)
                                                 {
                                                     WebCallResult<BinancePlacedOrder> stopLossOrderResult = null;
 
                                                     var quantity = BinanceHelpers.ClampQuantity(symbol.LotSizeFilter.MinQuantity, symbol.LotSizeFilter.MaxQuantity, symbol.LotSizeFilter.StepSize, baseA);
 
-                                                    if (strategyInfo.StopLoseType == 0)
+                                                    if (strategyInfo.SellType == 0)
                                                     {
                                                         var minNational = quantity * price;
 
@@ -162,15 +161,15 @@ namespace Impulse.Helpers
                                             }
 
                                             // SELLBASE
-                                            var sellOrder = market.YesToSell(strategyInfo.Rise, storedAvg, price);
+                                            var sellOrder = market.YesToSell(strategyInfo.PercentagePriceRise, storedAvg, price);
 
-                                            logger.Info(LogGenerator.SellOrder(sellOrder));
+                                            logger.Info(LogGenerator.SellOrderInfo(sellOrder));
 
                                             if (sellOrder.IsReadyForMarket)
                                             {
                                                 logger.Info(LogGenerator.SellOrderReady(price, sellOrder, strategyInfo));
 
-                                                if (strategy.IsNotTestMode)
+                                                if (main.TestMode)
                                                 {
                                                     var quantity = BinanceHelpers.ClampQuantity(symbol.LotSizeFilter.MinQuantity, symbol.LotSizeFilter.MaxQuantity, symbol.LotSizeFilter.StepSize, quoteA);
 
@@ -209,7 +208,7 @@ namespace Impulse.Helpers
                                         // BUYORDER
                                         if (quoteA > 0.0m && quoteA > symbol.MinNotionalFilter.MinNotional)
                                         {
-                                            var buyOrder = market.YesToBuy(strategyInfo.Drop, storedAvg, price);
+                                            var buyOrder = market.YesToBuy(strategyInfo.PercentagePriceDrop, storedAvg, price);
 
                                             logger.Info(LogGenerator.BuyOrder(buyOrder));
 
@@ -217,7 +216,7 @@ namespace Impulse.Helpers
                                             {
                                                 logger.Info(LogGenerator.BuyOrderReady(price, buyOrder, strategyInfo));
 
-                                                if (strategy.IsNotTestMode)
+                                                if (main.TestMode)
                                                 {
                                                     var quantity = BinanceHelpers.ClampQuantity(symbol.LotSizeFilter.MinQuantity, symbol.LotSizeFilter.MaxQuantity, symbol.LotSizeFilter.StepSize, quoteA);
 

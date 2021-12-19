@@ -28,11 +28,11 @@ namespace Impulse.Shared.Contexts
 
         #region MyRegion
 
-        public async Task<TickerResponse> GetPrice(StrategyInfo strategyInfo)
+        public async Task<TickerResponse> GetPrice(Strategy strategyInfo)
         {
             var result = new TickerResponse();
 
-            if (strategyInfo.Ticker == 0)
+            if (strategyInfo.NowAvgPrice == 0)
             {
                 var response = await binanceClient.Spot.Market.GetPriceAsync(strategyInfo.Symbol);
 
@@ -45,7 +45,7 @@ namespace Impulse.Shared.Contexts
                     result.Message = response.Error.Message;
                 }
             }
-            else if (strategyInfo.Ticker == 1)
+            else if (strategyInfo.NowAvgPrice == 1)
             {
                 var response = await binanceClient.Spot.Market.GetCurrentAvgPriceAsync(strategyInfo.Symbol);
 

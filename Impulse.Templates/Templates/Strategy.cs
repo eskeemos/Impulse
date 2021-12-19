@@ -1,23 +1,16 @@
-﻿using System.Collections.Generic;
-
-namespace Impulse.Shared.Templates
+﻿namespace Impulse.Shared.Templates
 {
     public class Strategy
     {
-        // TODO
-        public int ActiveId { get; set; }
-
-        // TODO
-        public int IntervalInMinutes { get; set; }
-
-        // TODO
-        public IEnumerable<StrategyInfo> StrategiesData { get; set; }
-
-        // TODO
-        public int TestMode { get; set; }
-
-        // TODO
-        public bool IsNotTestMode => TestMode == 0;
-
+        public int Id { get; set; }
+        public string Symbol { get; set; }
+        public string StoragePath { get; set; }
+        public int PercentagePriceRise { get; set; }
+        public int PercentagePriceDrop { get; set; }
+        public int CountLastAverage { get; set; }
+        public int NowAvgPrice { get; set; }
+        public int PercentageStopLose { get; set; }
+        public int PercentageResourceToPlay { get; set; }
+        public int SellType { get; set; }
     }
-}
+}   
