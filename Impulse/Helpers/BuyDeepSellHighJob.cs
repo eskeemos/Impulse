@@ -5,7 +5,7 @@ using CryptoExchange.Net.Objects;
 using Impulse.Shared.Contexts;
 using Impulse.Shared.Domain.Service;
 using Impulse.Shared.Domain.Statics;
-using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Templates;
 using Impulse.Shared.Extensions;
 using NLog;
 using Quartz;
@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Impulse.Shared.Service;
 
 namespace Impulse.Helpers
 {

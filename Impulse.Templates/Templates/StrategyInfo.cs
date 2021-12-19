@@ -1,4 +1,4 @@
-﻿namespace Impulse.Shared.Domain.Templates
+﻿namespace Impulse.Shared.Templates
 {
     public class StrategyInfo
     {

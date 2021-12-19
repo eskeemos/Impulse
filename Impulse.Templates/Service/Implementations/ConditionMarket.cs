@@ -1,7 +1,6 @@
-﻿using Impulse.Shared.Domain.Service.Response;
-using Impulse.Shared.Service.Response;
+﻿using Impulse.Shared.Service.Response;
 
-namespace Impulse.Shared.Domain.Service.Implementations
+namespace Impulse.Shared.Service.Implementations
 {
     public class ConditionMarket : IMarket
     {

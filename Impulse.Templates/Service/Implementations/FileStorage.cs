@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Impulse.Shared.Domain.Service;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Impulse.Shared.Domain.Service.Implementations
+namespace Impulse.Shared.Service.Implementations
 {
     public class FileStorage : IStorage
     {

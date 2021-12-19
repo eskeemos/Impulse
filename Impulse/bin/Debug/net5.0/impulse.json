@@ -1,6 +1,6 @@
 ﻿{
-  "Name": "impulse",
-  "Exchanges": [
+  "name": "impulse",
+  "exchanges": [
     {
       "name": "Binance",
       "apikey": "VrOP0z7jyQLtuYuFsTlehn5TORwkDqcwO0dUDnTz98CmCRXHMsXKL4OBAjNkLCyA",

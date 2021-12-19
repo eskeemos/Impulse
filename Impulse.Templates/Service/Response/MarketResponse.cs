@@ -1,4 +1,4 @@
-﻿namespace Impulse.Shared.Domain.Service.Response
+﻿namespace Impulse.Shared.Service.Response
 {
     public class MarketResponse
     {

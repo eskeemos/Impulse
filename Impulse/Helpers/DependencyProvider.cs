@@ -1,11 +1,11 @@
 ﻿using Impulse.Shared.Domain.Service;
-using Impulse.Shared.Domain.Service.Implementations;
-using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Service;
+using Impulse.Shared.Service.Implementations;
+using Impulse.Shared.Templates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System;
-using System.Linq;
 
 namespace Impulse.Helpers
 {

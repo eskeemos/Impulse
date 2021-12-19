@@ -1,6 +1,6 @@
 ﻿using Binance.Net.Objects.Spot.SpotData;
-using Impulse.Shared.Domain.Service.Response;
-using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Service.Response;
+using Impulse.Shared.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;

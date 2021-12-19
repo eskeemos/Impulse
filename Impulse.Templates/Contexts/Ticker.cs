@@ -1,6 +1,6 @@
 ﻿using Binance.Net.Interfaces;
 using Binance.Net.Objects.Spot.MarketData;
-using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Impulse.Shared.Domain.Templates
+namespace Impulse.Shared.Templates
 {
     public class Strategy
     {

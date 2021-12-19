@@ -2,7 +2,7 @@
 using Binance.Net.Objects;
 using CryptoExchange.Net.Authentication;
 using Impulse.Helpers;
-using Impulse.Shared.Domain.Templates;
+using Impulse.Shared.Templates;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using Quartz;
