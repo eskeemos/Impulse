@@ -2,7 +2,7 @@
 {
     public class MarketResponse
     {
-        public bool IsReadyForMarket { get; set; }
+        public bool GoodToTrade { get; set; }
         public decimal PercentChanged { get; set; } 
     }
 }

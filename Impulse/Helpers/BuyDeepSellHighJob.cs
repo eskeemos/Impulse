@@ -79,7 +79,7 @@ namespace Impulse.Helpers
 
                                         storage.SaveValue(price);
 
-                                        var storedAvg = Average.CountAverage(storage.GetValues(), 8, strategyInfo.CountLastAverage);
+                                        var storedAvg = Average.CountAverage(storage.GetValues(), 8, strategyInfo.AveragesAmount);
 
                                         logger.Info(LogGenerator.GetAveragePriceInfo(strategyInfo, storedAvg));
 
@@ -91,7 +91,7 @@ namespace Impulse.Helpers
 
                                             logger.Info(LogGenerator.StopLossOrder(stopLossOrder));
 
-                                            if (stopLossOrder.IsReadyForMarket)
+                                            if (stopLossOrder.GoodToTrade)
                                             {
                                                 logger.Info(LogGenerator.StopLossOrderReady(price, stopLossOrder, strategyInfo));
 
@@ -165,7 +165,7 @@ namespace Impulse.Helpers
 
                                             logger.Info(LogGenerator.SellOrderInfo(sellOrder));
 
-                                            if (sellOrder.IsReadyForMarket)
+                                            if (sellOrder.GoodToTrade)
                                             {
                                                 logger.Info(LogGenerator.SellOrderReady(price, sellOrder, strategyInfo));
 
@@ -212,7 +212,7 @@ namespace Impulse.Helpers
 
                                             logger.Info(LogGenerator.BuyOrder(buyOrder));
 
-                                            if (buyOrder.IsReadyForMarket)
+                                            if (buyOrder.GoodToTrade)
                                             {
                                                 logger.Info(LogGenerator.BuyOrderReady(price, buyOrder, strategyInfo));
 

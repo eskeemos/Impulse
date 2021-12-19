@@ -3,8 +3,8 @@
   "exchanges": [
     {
       "name": "Binance",
-      "apikey": "VrOP0z7jyQLtuYuFsTlehn5TORwkDqcwO0dUDnTz98CmCRXHMsXKL4OBAjNkLCyA",
-      "apisecret": "qKyiKhHTzA3AwGVLyh3gQEBzH4ORXrmeYDTV4GQ1al7Di6pb33gsLH18FGH8O3WH"
+      "apikey": "",
+      "apisecret": ""
     }
   ],
   "main": {
@@ -14,14 +14,14 @@
     "strategies": [
       {
         "id": 1,
-        "countlastaverage": 5,
+        "averagesamount": 5,
         "percentagepricedrop": 10,
         "percentagepricerise": 5,
         "percentageresourcetoplay": 100,
         "percentagestoplose": 10,
         "selltype": 1,
         "storagepath": "c:\\impulse\\",
-        "symbol": "ETHBTC",
+        "symbol": "TRXXRP",
         "nowavgprice": 0
       }
     ]

@@ -2,6 +2,7 @@
 
 namespace Impulse.Shared.Templates
 {
+    // TOCOM
     public class App
     {
         public string Name { get; set; }

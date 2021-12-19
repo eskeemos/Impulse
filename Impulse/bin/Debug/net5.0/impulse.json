@@ -14,14 +14,14 @@
     "strategies": [
       {
         "id": 1,
-        "countlastaverage": 5,
+        "averagesamount": 5,
         "percentagepricedrop": 10,
         "percentagepricerise": 5,
         "percentageresourcetoplay": 100,
         "percentagestoplose": 10,
         "selltype": 1,
         "storagepath": "c:\\impulse\\",
-        "symbol": "ETHBTC",
+        "symbol": "TRXXRP",
         "nowavgprice": 0
       }
     ]

@@ -1,5 +1,6 @@
 ﻿namespace Impulse.Shared.Templates
 {
+    // TOCOM
     public class Exchange
     { 
         public string Name { get; set; }

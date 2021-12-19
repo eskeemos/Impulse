@@ -7,11 +7,11 @@ namespace Impulse.Shared.Statics
     public class LogGenerator
     {
         public static string GetCurrentPriceInfo(Strategy strategy, decimal price)
-            => $"Current PRICE for {strategy.Symbol} : {price}";
+            => $"Current price for {strategy.Symbol} is {price}";
         public static string GetAveragePriceInfo(Strategy strategy, decimal storedAverage)
-            => $"Average PRICE : {storedAverage} for {strategy.Symbol} from last [{strategy.CountLastAverage}] logs";
+            => $"Average price for {strategy.Symbol} is {storedAverage}, from last {strategy.AveragesAmount} logs";
         public static string SellOrderInfo(MarketResponse response)
-            => $"Sell order [{response.IsReadyForMarket}], PRICE change ({response.PercentChanged}%)";
+            => $"Sell order [{response.GoodToTrade}], price change ({response.PercentChanged}%)";
         public static string SellOrderReady(decimal price, MarketResponse marketResponse, Strategy strategyInfo)
             => $"Price ({price}) increased ({marketResponse.PercentChanged}%) > ({strategyInfo.PercentagePriceRise}%), selling {strategyInfo.Symbol}";
         public static string SellTest
@@ -23,7 +23,7 @@ namespace Impulse.Shared.Statics
         public static string SellResultEnd(long orderId)
             => $"End selling order ({orderId})";
         public static string BuyOrder(MarketResponse marketResponse)
-            => $"Buy order ({marketResponse.IsReadyForMarket}), price change ({marketResponse.PercentChanged})%";
+            => $"Buy order ({marketResponse.GoodToTrade}), price change ({marketResponse.PercentChanged})%";
         public static string BuyOrderReady(decimal price, MarketResponse marketResponse, Strategy strategyInfo)
             => $"Price ({price}) dropped ({marketResponse.PercentChanged}%) < ({strategyInfo.PercentagePriceDrop}%), buying {strategyInfo.Symbol}";
         public static string BuyTest
@@ -43,7 +43,7 @@ namespace Impulse.Shared.Statics
         public static string WarnFilterMinNational(string quoteAsset, decimal availableQuote, decimal min)
             => $"Not enough {quoteAsset} ({availableQuote}), needed at least ({min})"; 
         public static string StopLossOrder(MarketResponse marketResponse)
-            => $"Stop lose order ({marketResponse.IsReadyForMarket}), price change ({marketResponse.PercentChanged})";
+            => $"Stop lose order ({marketResponse.GoodToTrade}), price change ({marketResponse.PercentChanged})";
         public static string StopLossOrderReady(decimal price, MarketResponse marketResponse, Strategy strategy)
             => $"Price ({price}) dropped ({marketResponse.PercentChanged}%) > ({strategy.PercentageStopLose}%), selling all {strategy.Symbol}";
         public static string StopLossTest 

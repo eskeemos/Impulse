@@ -2,6 +2,7 @@
 
 namespace Impulse.Shared.Templates
 {
+    // TOCOM
     public class Main
     {
         public int ActiveId { get; set; }
